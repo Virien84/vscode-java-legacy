@@ -1,0 +1,16 @@
+# Binarios pesados que setup.ps1 descarga de sus fuentes oficiales (VSCode, JDK,
+# Tomcat, Maven) — no se versionan, se generan al ejecutar el script.
+/VSCode-win32-x64-*/
+/Complementos/openjdk-*/
+/Complementos/apache-tomcat-*/
+/Complementos/apache-maven-*/
+
+# Carpeta temporal de trabajo del propio setup.ps1
+/_setup_tmp/
+
+# Checkouts SVN y cliente SVN portable de cada usuario (locales, no del repo)
+/Complementos/svn/
+/Complementos/svn-libs/
+
+# Configuracion local de Claude Code (rutas y permisos de esta maquina, no del repo)
+/.claude/

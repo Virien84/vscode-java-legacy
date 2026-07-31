@@ -186,6 +186,31 @@ Tras el aviso de tamaño (2.5 GB, inviable en git), se eligió la opción de **s
 
 Creado `README.md` en la raíz — es lo primero que ve cualquiera que entre al repositorio. Incluye: instalación rápida (`git clone` + `.\setup.ps1`), por qué se usa un script en vez de versionar los binarios, estructura del repo, tabla de versiones del stack y de extensiones instaladas, y enlaces a `ESTADO-SETUP.md` (el porqué de cada decisión) e `INSTRUCCIONES-PENDIENTES.md` (manual de uso + pasos pendientes de cada usuario). Comiteado y sincronizado con `origin/main`.
 
+## Formateo de código: XML de Eclipse + organizar imports y formatear al guardar (2026-07-31)
+
+Dos tareas nuevas del usuario: (1) que el entorno acepte un XML con las reglas de formateo, (2) que al guardar un fichero se organicen los imports y se aplique ese formato automáticamente.
+
+1. **Verificados los nombres exactos de los settings** leyendo el `package.json` de `redhat.java` (no adivinados): `java.format.settings.url` (ruta/URL al XML de formateo estilo Eclipse), `java.format.settings.profile` (nombre del perfil dentro del XML). `java.saveActions.organizeImports` existe pero **está deprecado** en esta versión (1.55.0) a favor de `editor.codeActionsOnSave` con la clave `source.organizeImports` — se ha usado la forma no deprecada.
+
+2. **Creado `formatter/formatter.xml`** en la raíz del repo: perfil de formateo estilo Eclipse llamado `ProyectoDefault`, con un **placeholder mínimo** (solo tabulación a espacios de tamaño 4 — el resto de reglas caen en los valores por defecto de Eclipse/JDT) a la espera de que se sustituya por el XML real del proyecto (ver `INSTRUCCIONES-PENDIENTES.md` sección 3.4). Validado como XML bien formado.
+
+3. **`setup.ps1` actualizado** para que genere también estos settings (así queda reproducible para cualquiera que clone el repo, no solo en esta máquina):
+   ```json
+   "java.format.settings.url": "<ruta>\\formatter\\formatter.xml",
+   "java.format.settings.profile": "ProyectoDefault",
+   "[java]": {
+       "editor.formatOnSave": true,
+       "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }
+   }
+   ```
+4. **Regenerado el `settings.json` real** ejecutando `.\setup.ps1` (sin `-Force`, así que no volvió a descargar nada — solo reinstaló extensiones de forma idempotente y regeneró `settings.json`/`setenv.bat`). Validado: JSON bien formado, rutas correctas.
+5. **No se ha podido probar en caliente** (abrir un `.java`, guardar y comprobar que formatea/organiza imports) por falta de entorno gráfico en esta sesión — solo se ha verificado a nivel de configuración (nombres de setting correctos según el código fuente de la extensión, JSON/XML válidos, fichero referenciado existe).
+6. **`INSTRUCCIONES-PENDIENTES.md` actualizado**: nueva sección 1.5 (comportamiento de formateo al guardar, en el manual de uso) y nueva sección 3.4 (cómo sustituir el XML placeholder por el real del proyecto) — el resto de la sección 3 se renumeró (3.4→3.5 servidor, 3.5→3.6 añadir Tomcat, 3.6→3.7 Oracle).
+
+## Nueva norma de trabajo a partir de ahora (2026-07-31)
+
+El usuario ha pedido que, **una vez una tarea esté comprobada**, además de actualizar el `.md` correspondiente se haga **commit (y push) a GitHub** — no dejarlo solo en local. Se aplica desde esta tarea en adelante.
+
 ## Decisiones tomadas (y por qué)
 
 - **Se mantienen los DOS JDK (11 y 17), no sobra el 17**: la extensión de Java de VSCode (Red Hat, `redhat.java` / Extension Pack for Java) requiere **JDK 17+ para ejecutar el propio Language Server**, independientemente de la versión con la que se compile el proyecto. Plan: JDK 17 → runtime del Language Server (`java.jdt.ls.java.home`); JDK 11 → JDK del proyecto (compilación/ejecución, `JAVA_HOME`, `maven-compiler-plugin` source/target=11).

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Placeholder: sustituye este fichero por el XML real de formateo del
+  proyecto (en Eclipse: Preferences > Java > Code Style > Formatter >
+  Export...). Este perfil minimo solo fija tabulacion con espacios de
+  tamano 4; el resto de reglas usan los valores por defecto de Eclipse/JDT.
+  El nombre del perfil ("ProyectoDefault") debe coincidir con
+  java.format.settings.profile en settings.json (ver setup.ps1).
+-->
+<profiles version="21">
+    <profile kind="CodeFormatterProfile" name="ProyectoDefault" version="21">
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+    </profile>
+</profiles>

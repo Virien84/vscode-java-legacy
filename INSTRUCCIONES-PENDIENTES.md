@@ -106,6 +106,16 @@ Complementos\apache-maven-3.8.1\bin\mvn.cmd test -Dtest=NombreDeLaClaseTest
 
 > Si los tests son de integración (necesitan Tomcat y/o la base de datos Oracle arrancados), arráncalos primero (punto 1.1) antes de lanzar la suite.
 
+### 1.5 Formateo de código al guardar
+
+Cada vez que guardas un `.java` (`Ctrl+S`), VSCode automáticamente:
+1. **Organiza los imports** (añade los que falten según el código, quita los que no se usan, los ordena).
+2. **Aplica el formato** definido en `formatter/formatter.xml` (perfil `ProyectoDefault`) — el mismo fichero de reglas de formateo estilo Eclipse que usa el resto del equipo.
+
+No hay que hacer nada manualmente ni ejecutar ningún comando — es automático al guardar. Si quieres formatear un fichero sin guardar: paleta de comandos → "Format Document" (`Shift+Alt+F`). Si quieres organizar imports sin guardar: paleta de comandos → "Organize Imports" (`Shift+Alt+O`).
+
+> El XML de formateo que trae el repo (`formatter/formatter.xml`) es un **placeholder mínimo** (ver sección 3) — hasta que se sustituya por el real del proyecto, solo fija la tabulación (espacios, tamaño 4) y el resto de reglas usan los valores por defecto de Eclipse/JDT.
+
 ---
 
 ## 2. Cambiar las rutas si usas otra carpeta, otro usuario u otra máquina
@@ -120,6 +130,7 @@ Este paquete usa **rutas absolutas** en varios ficheros de configuración, apunt
 | `Complementos\apache-tomcat-9.0.120\bin\setenv.bat` | `JAVA_HOME` |
 | `settings.json` (si ya configuraste el punto 1 de la sección siguiente) | `svn.path` |
 | `settings.json` (si ya configuraste el punto 3 de la sección siguiente) | `java.debug.settings.sourcePaths` |
+| `settings.json` | `java.format.settings.url` (ruta a `formatter/formatter.xml`) |
 
 **Pasos**:
 
@@ -180,7 +191,16 @@ Si tienes TortoiseSVN instalado pero sin el componente "command line client tool
    ```
 3. Si el proyecto usa las librerías como `.jar` compilado (vía Maven), comprueba que la versión del `.jar` en el repositorio Maven local coincide con la versión del código fuente bajado de SVN — si no coinciden, el step-into puede desalinearse (mostrar la línea equivocada).
 
-### 3.4 Parámetros del servidor Tomcat (puerto, timeout, VM Arguments)
+### 3.4 Sustituir el XML de formateo por el real del proyecto
+
+El repo trae `formatter/formatter.xml` como **placeholder mínimo** (solo tabulación). Para usar las reglas de formateo reales del proyecto/equipo:
+
+1. Exporta el perfil desde Eclipse: **Preferences > Java > Code Style > Formatter > Export...** (o pide el XML a quien lo tenga).
+2. Sustituye el contenido de `formatter/formatter.xml` por ese XML.
+3. Abre el fichero exportado y comprueba el atributo `name` del `<profile>` — si no es exactamente `ProyectoDefault`, o bien renómbralo a `ProyectoDefault`, o bien actualiza `java.format.settings.profile` en `settings.json` para que coincida con el nombre real.
+4. No hace falta reiniciar VSCode necesariamente, pero si el formateo no coge los cambios, reinícialo.
+
+### 3.5 Parámetros del servidor Tomcat (puerto, timeout, VM Arguments)
 
 **Puerto y timeout** — archivo `Complementos\apache-tomcat-9.0.120\conf\server.xml`, línea ~71:
 ```xml
@@ -196,13 +216,13 @@ Cambia `port="8080"` y `connectionTimeout="20000"` (milisegundos) por los valore
 
 **Alternativa por UI**: la extensión `adashen.vscode-tomcat` tiene el comando **"Customize JVM Options"** una vez añadido el servidor (punto 3.5). Con usar una de las dos formas basta, no hace falta duplicarlo.
 
-### 3.5 Añadir el servidor Tomcat en la extensión
+### 3.6 Añadir el servidor Tomcat en la extensión
 
 1. Abre VSCode.
 2. Panel "Tomcat" en la barra lateral → botón "+" (o paleta de comandos → "Tomcat: Add Server").
 3. Selecciona la carpeta `Complementos\apache-tomcat-9.0.120`.
 
-### 3.6 Conexión Oracle en la extensión `oracle.sql-developer`
+### 3.7 Conexión Oracle en la extensión `oracle.sql-developer`
 
 1. Abre el panel de la extensión (Database Explorer / icono de Oracle en la barra lateral).
 2. Crea una nueva conexión con tus datos reales (host, puerto, service name/SID, usuario, contraseña) — quedan guardados localmente por la extensión.
@@ -213,6 +233,7 @@ Cambia `port="8080"` y `connectionTimeout="20000"` (milisegundos) por los valore
 - [ ] `svn.exe` copiado en `Complementos\svn\bin\svn.exe` y `svn.path` en `settings.json`
 - [ ] 2 librerías descargadas en `Complementos\svn-libs\...`
 - [ ] `java.debug.settings.sourcePaths` apuntando a los fuentes reales
+- [ ] `formatter/formatter.xml` sustituido por el XML real del proyecto (y `java.format.settings.profile` ajustado si el nombre del perfil no es `ProyectoDefault`)
 - [ ] Puerto/timeout ajustados en `server.xml`
 - [ ] VM Arguments descomentados/ajustados en `setenv.bat`
 - [ ] Servidor Tomcat añadido en el panel de la extensión

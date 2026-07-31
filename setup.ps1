@@ -197,6 +197,7 @@ Write-Step "Generando settings.json y setenv.bat con las rutas de esta maquina"
 $jdk11Abs = Join-Path $complementos $jdk11Folder
 $jdk17Abs = Join-Path $complementos $jdk17Folder
 $mavenExeAbs = Join-Path $mavenPath "bin\mvn.cmd"
+$formatterXmlAbs = Join-Path $root "formatter\formatter.xml"
 
 $userDir = Join-Path $dataPath "user-data\User"
 New-Item -ItemType Directory -Force -Path $userDir | Out-Null
@@ -206,9 +207,15 @@ $settings = [ordered]@{
         [ordered]@{ name = "JavaSE-11"; path = $jdk11Abs; default = $true },
         [ordered]@{ name = "JavaSE-17"; path = $jdk17Abs }
     )
-    "java.jdt.ls.java.home"      = $jdk17Abs
+    "java.jdt.ls.java.home"       = $jdk17Abs
     "maven.executable.path"      = $mavenExeAbs
     "maven.terminal.useJavaHome" = $true
+    "java.format.settings.url"     = $formatterXmlAbs
+    "java.format.settings.profile" = "ProyectoDefault"
+    "[java]" = [ordered]@{
+        "editor.formatOnSave"      = $true
+        "editor.codeActionsOnSave" = [ordered]@{ "source.organizeImports" = "explicit" }
+    }
 }
 $settingsJson = $settings | ConvertTo-Json -Depth 5
 # Set-Content -Encoding utf8 en Windows PowerShell 5.1 siempre añade BOM; lo

@@ -174,6 +174,18 @@ Tras el aviso de tamaño (2.5 GB, inviable en git), se eligió la opción de **s
    - Pulido menor tras la prueba: el `settings.json` generado llevaba BOM UTF-8 (por `Set-Content -Encoding utf8` en PowerShell 5.1) y el orden de claves salía desordenado (hashtables no ordenadas). Corregido escribiendo el fichero con `[System.IO.File]::WriteAllText` + `UTF8Encoding($false)` y usando `[ordered]@{}` en los objetos de runtime — revalidado con un JSON de prueba (sin BOM, orden correcto, `json.load` sin errores).
    - Carpeta de prueba eliminada tras la validación.
 
+## Publicado en GitHub (2026-07-31)
+
+1. **`git init`** en la raíz del proyecto. Añadido `/.claude/` al `.gitignore` (config local de Claude Code, específica de esta máquina, no debe versionarse).
+2. **Commit inicial** (`e905c73`): tras `git add -A`, con el `.gitignore` ya filtrando los binarios pesados, solo entraron 6 ficheros y 5.45 MB en total — `.gitignore`, `setup.ps1`, `ESTADO-SETUP.md`, `INSTRUCCIONES-PENDIENTES.md`, `Complementos/lombok-1.18.26.jar`, `Complementos/ojdbc7-12.1.0.2.jar`. Verificado con `git status` antes de comitear.
+3. **Repositorio remoto**: [github.com/Virien84/vscode-java-legacy](https://github.com/Virien84/vscode-java-legacy), creado vacío por el usuario (sin README/licencia/gitignore para no chocar con el commit local).
+4. **Push**: `gh` CLI no está instalado en esta máquina, así que no se pudo crear el repo ni autenticar el push desde aquí. El primer intento de `git push` falló por falta de credencial (Git Credential Manager necesita un login interactivo por navegador). El usuario ejecutó el `git push -u origin main` él mismo desde su propia terminal para autenticarse; verificado después con `git fetch` que `origin/main` coincide con el commit local y el working tree está limpio.
+5. **Rama por defecto**: `main` (se renombró desde `master`, que es lo que crea `git init` por defecto).
+
+## README.md añadido (2026-07-31)
+
+Creado `README.md` en la raíz — es lo primero que ve cualquiera que entre al repositorio. Incluye: instalación rápida (`git clone` + `.\setup.ps1`), por qué se usa un script en vez de versionar los binarios, estructura del repo, tabla de versiones del stack y de extensiones instaladas, y enlaces a `ESTADO-SETUP.md` (el porqué de cada decisión) e `INSTRUCCIONES-PENDIENTES.md` (manual de uso + pasos pendientes de cada usuario). Comiteado y sincronizado con `origin/main`.
+
 ## Decisiones tomadas (y por qué)
 
 - **Se mantienen los DOS JDK (11 y 17), no sobra el 17**: la extensión de Java de VSCode (Red Hat, `redhat.java` / Extension Pack for Java) requiere **JDK 17+ para ejecutar el propio Language Server**, independientemente de la versión con la que se compile el proyecto. Plan: JDK 17 → runtime del Language Server (`java.jdt.ls.java.home`); JDK 11 → JDK del proyecto (compilación/ejecución, `JAVA_HOME`, `maven-compiler-plugin` source/target=11).

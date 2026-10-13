@@ -1,7 +1,7 @@
 # Estado del setup — VSCode portable + stack Java
 
-> Última actualización: 2026-07-31
-> Objetivo del proyecto: dejar la copia portable de VSCode (`VSCode-win32-x64-1.131.0/`) configurada para trabajar con el stack: **Java 11 + Tomcat 9 + Maven + Oracle SQL + frontend XHTML/PrimeFaces**, usando los componentes de `Complementos/`.
+> Última actualización: 2026-10-13
+> Objetivo del proyecto: dejar la copia portable de VSCode (`VSCode-win32-x64-1.141.0/`) configurada para trabajar con el stack: **Java 11 + Tomcat 9 + Maven + Oracle SQL + frontend XHTML/PrimeFaces**, usando los componentes de `Complementos/`.
 
 Este fichero existe para poder retomar el trabajo en otra sesión sin tener que re-analizar todo desde cero.
 
@@ -9,16 +9,16 @@ Este fichero existe para poder retomar el trabajo en otra sesión sin tener que 
 
 ```
 Proyecto VsCode Java/
-├── VSCode-win32-x64-1.131.0/     ← VSCode portable, YA en modo portable (carpeta data/ creada)
+├── VSCode-win32-x64-1.141.0/     ← VSCode portable, YA en modo portable (carpeta data/ creada)
 │   └── data/
 │       ├── user-data/            ← settings, historial, etc. (queda dentro del proyecto)
 │       └── extensions/           ← extensiones instaladas (ver lista abajo)
 ├── Complementos/
-│   ├── openjdk-11.0.32+9/       ← JDK de COMPILACIÓN/EJECUCIÓN del proyecto (target Java 11)
-│   ├── openjdk-17.0.20+8/       ← JDK para el Language Server de Java en VSCode (redhat.java necesita 17+)
-│   ├── apache-maven-3.8.1/      ← estructura ya corregida (bin/, lib/, conf/ directamente dentro)
-│   ├── apache-tomcat-9.0.120/   ← OK, estructura estándar completa
-│   ├── lombok-1.18.26.jar
+│   ├── openjdk-11.0.32.1+1/       ← JDK de COMPILACIÓN/EJECUCIÓN del proyecto (target Java 11)
+│   ├── openjdk-17.0.20.1+1/       ← JDK para el Language Server de Java en VSCode (redhat.java necesita 17+)
+│   ├── apache-maven-3.10.0/     ← estructura estándar (bin/, lib/, conf/ directamente dentro)
+│   ├── apache-tomcat-9.0.123/   ← OK, estructura estándar completa
+│   ├── lombok-1.18.48.jar
 │   └── ojdbc7-12.1.0.2.jar      ← driver JDBC Oracle
 └── ESTADO-SETUP.md              ← este fichero
 ```
@@ -211,6 +211,23 @@ Dos tareas nuevas del usuario: (1) que el entorno acepte un XML con las reglas d
 
 El usuario ha pedido que, **una vez una tarea esté comprobada**, además de actualizar el `.md` correspondiente se haga **commit (y push) a GitHub** — no dejarlo solo en local. Se aplica desde esta tarea en adelante.
 
+## Actualización de versiones (2026-10-13)
+
+Se actualizaron todos los componentes a su última versión **dentro de la misma línea mayor** (el stack es legacy: el proyecto sigue siendo Java 11 + Tomcat 9, así que no se salta a JDK 21/25 ni a Tomcat 10/11, que además cambia `javax.*` → `jakarta.*`):
+
+| Componente | Antes | Ahora |
+|---|---|---|
+| VSCode portable | 1.131.0 | 1.141.0 |
+| OpenJDK 11 (Temurin) | 11.0.32+9 | 11.0.32.1+1 |
+| OpenJDK 17 (Temurin) | 17.0.20+8 | 17.0.20.1+1 |
+| Apache Tomcat 9 | 9.0.120 | 9.0.123 |
+| Apache Maven | 3.8.1 | 3.10.0 (última 3.x estable; Maven 4 sigue en release candidate) |
+| Lombok | 1.18.26 | 1.18.48 (SHA-1 verificado contra Maven Central) |
+| Extensiones VSCode | — | reinstaladas a la última (`redhat.java` 1.56.0, `vscode-java-pack` 0.31.1, `oracle.sql-developer` 26.3.0, …) |
+| ojdbc7 | 12.1.0.2 | **sin cambio** — es la única versión de ojdbc7; pasar a ojdbc8/ojdbc11 es decisión de compatibilidad con la BD, no una actualización |
+
+Proceso: versiones y checksums nuevos en `setup.ps1` (sacados de la API de Adoptium y de los `.sha512` de `archive.apache.org`), ejecutado `.\setup.ps1` → todos los checksums OK. Verificado: `java -version` en ambos JDK, `mvn -version` con JDK 11, `ServerInfo` de Tomcat con JDK 11, `code --version` y lista de extensiones. Antes de borrar las carpetas antiguas se comprobó que no tenían nada personalizado (conf de Tomcat original, `settings.json` = el generado por el script). `settings.json` y `setenv.bat` regenerados con las rutas nuevas.
+
 ## Decisiones tomadas (y por qué)
 
 - **Se mantienen los DOS JDK (11 y 17), no sobra el 17**: la extensión de Java de VSCode (Red Hat, `redhat.java` / Extension Pack for Java) requiere **JDK 17+ para ejecutar el propio Language Server**, independientemente de la versión con la que se compile el proyecto. Plan: JDK 17 → runtime del Language Server (`java.jdt.ls.java.home`); JDK 11 → JDK del proyecto (compilación/ejecución, `JAVA_HOME`, `maven-compiler-plugin` source/target=11).
@@ -221,7 +238,7 @@ El usuario ha pedido que, **una vez una tarea esté comprobada**, además de act
 - [x] ~~Modo portable de VSCode~~ → hecho, ver arriba.
 - [x] ~~Instalar extensiones de VSCode~~ → hecho, ver tabla arriba (`vscode-java-pack`, `vscode-xml`, `vscode-tomcat`, `oracle.sql-developer`).
 - [x] ~~Configurar rutas de JDK/Maven en `settings.json`~~ → hecho, ver sección anterior.
-- [ ] **Añadir el servidor Tomcat en la UI** (paso manual, no scriptable): abrir VSCode → panel "Tomcat" → botón "+" / comando "Tomcat: Add Server" → seleccionar `Complementos/apache-tomcat-9.0.120`.
+- [ ] **Añadir el servidor Tomcat en la UI** (paso manual, no scriptable): abrir VSCode → panel "Tomcat" → botón "+" / comando "Tomcat: Add Server" → seleccionar `Complementos/apache-tomcat-9.0.123`.
 - [ ] **Crear la conexión Oracle en la UI** de `oracle.sql-developer` (paso manual): faltan datos reales — host, puerto, service name/SID y usuario de la base de datos.
 - [ ] **Probar en caliente** que VSCode arranca bien con el `settings.json` nuevo (abrir la app, comprobar que el Language Server de Java carga sin errores y que "Java Projects" ve los dos runtimes). No se pudo verificar en esta sesión por falta de entorno gráfico.
 - [x] ~~Instalar Eclipse Keymap y SVN SCM~~ → hecho.
@@ -232,12 +249,12 @@ El usuario ha pedido que, **una vez una tarea esté comprobada**, además de act
   - `javax.servlet-api` con `scope=provided` (la da Tomcat 9).
   - Lombok como dependencia + procesador de anotaciones.
   - `ojdbc7` como dependencia — **no está en Maven Central**, hay que instalarlo en el repo local (`mvn install:install-file ...`) o en un repositorio interno.
-- [ ] **Decidir** si `ojdbc7.jar` va también en `Complementos/apache-tomcat-9.0.120/lib/` (si se usará un DataSource JNDI gestionado por el contenedor) o solo como dependencia empaquetada en el WAR (si la conexión la gestiona la propia app).
+- [ ] **Decidir** si `ojdbc7.jar` va también en `Complementos/apache-tomcat-9.0.123/lib/` (si se usará un DataSource JNDI gestionado por el contenedor) o solo como dependencia empaquetada en el WAR (si la conexión la gestiona la propia app).
 - [ ] Definir cómo se compilará y desplegará el `.war` generado por Maven hacia el Tomcat de `Complementos/`.
 
 ## Rutas clave (para copiar/pegar en configuración)
 
-- `JAVA_HOME` (proyecto, Java 11): `Complementos/openjdk-11.0.32+9`
-- JDK para Language Server (17): `Complementos/openjdk-17.0.20+8`
-- `M2_HOME` / Maven: `Complementos/apache-maven-3.8.1`
-- `CATALINA_HOME` / Tomcat: `Complementos/apache-tomcat-9.0.120`
+- `JAVA_HOME` (proyecto, Java 11): `Complementos/openjdk-11.0.32.1+1`
+- JDK para Language Server (17): `Complementos/openjdk-17.0.20.1+1`
+- `M2_HOME` / Maven: `Complementos/apache-maven-3.10.0`
+- `CATALINA_HOME` / Tomcat: `Complementos/apache-tomcat-9.0.123`

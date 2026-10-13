@@ -18,7 +18,7 @@ El repositorio **no lleva los binarios** (VSCode, los 2 JDK, Tomcat, Maven pesan
 .\setup.ps1
 ```
 
-- Todas las versiones están fijadas (no "latest") para que el resultado sea reproducible: VSCode 1.131.0, OpenJDK 11.0.32+9 y 17.0.20+8 (Temurin), Tomcat 9.0.120, Maven 3.8.1.
+- Todas las versiones están fijadas (no "latest") para que el resultado sea reproducible: VSCode 1.141.0, OpenJDK 11.0.32.1+1 y 17.0.20.1+1 (Temurin), Tomcat 9.0.123, Maven 3.10.0.
 - Si un componente ya existe (por ejemplo, lo ejecutas una segunda vez), se omite. Usa `.\setup.ps1 -Force` para forzar que lo vuelva a descargar todo.
 - Requiere conexión a internet la primera vez. Tarda varios minutos (descarga en total varios cientos de MB).
 - Al terminar, ya tienes todo listo para la sección 1 (Manual de uso) y solo quedan pendientes los pasos de la sección 2 (los que necesitan tus propios datos: SVN, Oracle, etc.).
@@ -41,13 +41,13 @@ El repositorio **no lleva los binarios** (VSCode, los 2 JDK, Tomcat, Maven pesan
 
 1. Empaqueta el proyecto:
    ```
-   Complementos\apache-maven-3.8.1\bin\mvn.cmd clean package
+   Complementos\apache-maven-3.10.0\bin\mvn.cmd clean package
    ```
    (ejecutado desde la carpeta raíz del proyecto, donde está el `pom.xml`). Esto genera un `.war` en `target\`.
-2. Copia ese `.war` a `Complementos\apache-tomcat-9.0.120\webapps\`.
+2. Copia ese `.war` a `Complementos\apache-tomcat-9.0.123\webapps\`.
 3. Arranca Tomcat:
    ```
-   Complementos\apache-tomcat-9.0.120\bin\startup.bat
+   Complementos\apache-tomcat-9.0.123\bin\startup.bat
    ```
 4. Espera en la consola el mensaje `Server startup in [n] milliseconds`.
 5. Abre `http://localhost:8080/<nombre-del-war>/` en el navegador (el puerto es el configurado en `server.xml`, ver [4.1](#41-puerto-y-timeout)).
@@ -58,7 +58,7 @@ El repositorio **no lleva los binarios** (VSCode, los 2 JDK, Tomcat, Maven pesan
 
 **Opción B — manual**:
 
-1. Abre `Complementos\apache-tomcat-9.0.120\bin\setenv.bat` y quita el `rem` de esta línea (ajusta el puerto si quieres otro):
+1. Abre `Complementos\apache-tomcat-9.0.123\bin\setenv.bat` y quita el `rem` de esta línea (ajusta el puerto si quieres otro):
    ```bat
    set "JAVA_OPTS=%JAVA_OPTS% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
    ```
@@ -84,7 +84,7 @@ El repositorio **no lleva los binarios** (VSCode, los 2 JDK, Tomcat, Maven pesan
 
 Usa siempre:
 ```
-Complementos\apache-tomcat-9.0.120\bin\shutdown.bat
+Complementos\apache-tomcat-9.0.123\bin\shutdown.bat
 ```
 (o el botón "Stop" del panel Tomcat de la extensión). Envía la señal de apagado limpio al puerto 8005. **No cierres la ventana de consola directamente** (con la X o `Ctrl+C` bruscamente) — puede dejar el proceso Java corriendo en segundo plano sin que se note.
 
@@ -97,11 +97,11 @@ Complementos\apache-tomcat-9.0.120\bin\shutdown.bat
 
 **Opción B — línea de comandos**, desde la carpeta raíz del proyecto:
 ```
-Complementos\apache-maven-3.8.1\bin\mvn.cmd test
+Complementos\apache-maven-3.10.0\bin\mvn.cmd test
 ```
 Para un test concreto:
 ```
-Complementos\apache-maven-3.8.1\bin\mvn.cmd test -Dtest=NombreDeLaClaseTest
+Complementos\apache-maven-3.10.0\bin\mvn.cmd test -Dtest=NombreDeLaClaseTest
 ```
 
 > Si los tests son de integración (necesitan Tomcat y/o la base de datos Oracle arrancados), arráncalos primero (punto 1.1) antes de lanzar la suite.
@@ -126,8 +126,8 @@ Este paquete usa **rutas absolutas** en varios ficheros de configuración, apunt
 
 | Fichero | Qué contiene / qué cambiar |
 |---|---|
-| `VSCode-win32-x64-1.131.0\data\user-data\User\settings.json` | `java.configuration.runtimes[0].path` (JDK 11), `java.configuration.runtimes[1].path` (JDK 17), `java.jdt.ls.java.home` (JDK 17), `maven.executable.path` |
-| `Complementos\apache-tomcat-9.0.120\bin\setenv.bat` | `JAVA_HOME` |
+| `VSCode-win32-x64-1.141.0\data\user-data\User\settings.json` | `java.configuration.runtimes[0].path` (JDK 11), `java.configuration.runtimes[1].path` (JDK 17), `java.jdt.ls.java.home` (JDK 17), `maven.executable.path` |
+| `Complementos\apache-tomcat-9.0.123\bin\setenv.bat` | `JAVA_HOME` |
 | `settings.json` (si ya configuraste el punto 1 de la sección siguiente) | `svn.path` |
 | `settings.json` (si ya configuraste el punto 3 de la sección siguiente) | `java.debug.settings.sourcePaths` |
 | `settings.json` | `java.format.settings.url` (ruta a `formatter/formatter.xml`) |
@@ -202,7 +202,7 @@ El repo trae `formatter/formatter.xml` como **placeholder mínimo** (solo tabula
 
 ### 3.5 Parámetros del servidor Tomcat (puerto, timeout, VM Arguments)
 
-**Puerto y timeout** — archivo `Complementos\apache-tomcat-9.0.120\conf\server.xml`, línea ~71:
+**Puerto y timeout** — archivo `Complementos\apache-tomcat-9.0.123\conf\server.xml`, línea ~71:
 ```xml
 <Connector port="8080" protocol="HTTP/1.1"
            connectionTimeout="20000"
@@ -212,7 +212,7 @@ El repo trae `formatter/formatter.xml` como **placeholder mínimo** (solo tabula
 ```
 Cambia `port="8080"` y `connectionTimeout="20000"` (milisegundos) por los valores que necesites. El connector HTTPS equivalente está en la línea ~93.
 
-**VM Arguments** — ya existe `Complementos\apache-tomcat-9.0.120\bin\setenv.bat` con `JAVA_HOME` fijado y ejemplos comentados de memoria y de debug remoto (usado en el punto 1.2). Descoméntalos y ajusta los valores según necesites.
+**VM Arguments** — ya existe `Complementos\apache-tomcat-9.0.123\bin\setenv.bat` con `JAVA_HOME` fijado y ejemplos comentados de memoria y de debug remoto (usado en el punto 1.2). Descoméntalos y ajusta los valores según necesites.
 
 **Alternativa por UI**: la extensión `adashen.vscode-tomcat` tiene el comando **"Customize JVM Options"** una vez añadido el servidor (punto 3.5). Con usar una de las dos formas basta, no hace falta duplicarlo.
 
@@ -220,7 +220,7 @@ Cambia `port="8080"` y `connectionTimeout="20000"` (milisegundos) por los valore
 
 1. Abre VSCode.
 2. Panel "Tomcat" en la barra lateral → botón "+" (o paleta de comandos → "Tomcat: Add Server").
-3. Selecciona la carpeta `Complementos\apache-tomcat-9.0.120`.
+3. Selecciona la carpeta `Complementos\apache-tomcat-9.0.123`.
 
 ### 3.7 Conexión Oracle en la extensión `oracle.sql-developer`
 

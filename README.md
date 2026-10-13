@@ -14,10 +14,10 @@ cd vscode-java-legacy
 
 `setup.ps1` descarga, de sus fuentes oficiales y con checksum verificado:
 
-- VSCode 1.131.0 portable (win32-x64)
-- OpenJDK 11.0.32+9 y OpenJDK 17.0.20+8 (Eclipse Temurin)
-- Apache Tomcat 9.0.120
-- Apache Maven 3.8.1
+- VSCode 1.141.0 portable (win32-x64)
+- OpenJDK 11.0.32.1+1 y OpenJDK 17.0.20.1+1 (Eclipse Temurin)
+- Apache Tomcat 9.0.123
+- Apache Maven 3.10.0
 
 E instala las extensiones de VSCode necesarias (ver tabla más abajo). Al terminar, genera `settings.json` y `setenv.bat` con las rutas absolutas de tu propia máquina.
 
@@ -32,7 +32,7 @@ Si ya lo tenías instalado y quieres rehacerlo desde cero: `.\setup.ps1 -Force`.
 ```
 ├── setup.ps1                     # instala/reinstala todo el entorno
 ├── Complementos/
-│   ├── lombok-1.18.26.jar
+│   ├── lombok-1.18.48.jar
 │   └── ojdbc7-12.1.0.2.jar        # driver JDBC de Oracle
 ├── ESTADO-SETUP.md                # historial y decisiones de la configuración
 └── INSTRUCCIONES-PENDIENTES.md    # manual de uso + pasos pendientes de cada usuario
@@ -54,12 +54,12 @@ Para el porqué de cada decisión de la configuración (por ejemplo, por qué ha
 
 | Componente | Versión |
 |---|---|
-| VSCode | 1.131.0 (portable) |
-| OpenJDK — proyecto (compilación/ejecución) | 11.0.32+9 (Eclipse Temurin) |
-| OpenJDK — Language Server de Java | 17.0.20+8 (Eclipse Temurin) |
-| Apache Tomcat | 9.0.120 |
-| Maven | 3.8.1 |
-| Lombok | 1.18.26 |
+| VSCode | 1.141.0 (portable) |
+| OpenJDK — proyecto (compilación/ejecución) | 11.0.32.1+1 (Eclipse Temurin) |
+| OpenJDK — Language Server de Java | 17.0.20.1+1 (Eclipse Temurin) |
+| Apache Tomcat | 9.0.123 |
+| Maven | 3.10.0 |
+| Lombok | 1.18.48 |
 | Driver JDBC Oracle | ojdbc7 12.1.0.2 |
 
 ## Extensiones de VSCode instaladas

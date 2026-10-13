@@ -38,24 +38,24 @@ $tmp = Join-Path $root "_setup_tmp"
 # ---------------------------------------------------------------------------
 # VERSIONES (fijadas para reproducibilidad; ver INSTRUCCIONES-PENDIENTES.md)
 # ---------------------------------------------------------------------------
-$vscodeVersion = "1.131.0"
+$vscodeVersion = "1.141.0"
 $vscodeFolder  = "VSCode-win32-x64-$vscodeVersion"
 
-$jdk11Release  = "jdk-11.0.32+9"
-$jdk11Folder   = "openjdk-11.0.32+9"
-$jdk11Sha256   = "c1a7c406b72fbbd30417d4b0fcf5cccd9318f15fd269f84fcece38d70b21e181"
+$jdk11Release  = "jdk-11.0.32.1+1"
+$jdk11Folder   = "openjdk-11.0.32.1+1"
+$jdk11Sha256   = "d5008f02174c1ad21c10407cbf104815cb390ec4c263d53946e8d0507d7a77f9"
 
-$jdk17Release  = "jdk-17.0.20+8"
-$jdk17Folder   = "openjdk-17.0.20+8"
-$jdk17Sha256   = "418497be5cf585bdd2203d6486a565d66d3f5e992d5630d45104cb873fab8122"
+$jdk17Release  = "jdk-17.0.20.1+1"
+$jdk17Folder   = "openjdk-17.0.20.1+1"
+$jdk17Sha256   = "e53a79c3c3d86865bd7e787903884331068e71321714ffd44f145785affc7cb0"
 
-$tomcatVersion = "9.0.120"
+$tomcatVersion = "9.0.123"
 $tomcatFolder  = "apache-tomcat-$tomcatVersion"
-$tomcatSha512  = "fca7cfbe8255b61fac0e474a9a7ac6fbaf2792c72061fda2666b26eb5ba60718adc4fc0cbd013f14a41f101bcd7f5b70b2d3eedc37554ff0db4bdb6e2e2898f6"
+$tomcatSha512  = "79a498d57c8ac5d704aebd5c2ea0aa2adaa3fa7c75149d007f1e33bc7ce79a30240d774d807b6cf3a63a4228cad847785ccd960c841580a2ecab5b30e5d68422"
 
-$mavenVersion  = "3.8.1"
+$mavenVersion  = "3.10.0"
 $mavenFolder   = "apache-maven-$mavenVersion"
-$mavenSha512   = "c585847bfbcf8647aeabfd3e8bf0ac3f67a037bd345545e274766f144c2b978b3457cbc3e31545e62c21ad69e732695de01ec96ea2580e5da67bd85df095c0f4"
+$mavenSha512   = "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337"
 
 # Extensiones validadas en la sesion original (mtxr.sqltools se probo y se
 # descarto a proposito, no incluir).

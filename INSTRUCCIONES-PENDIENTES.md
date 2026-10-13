@@ -12,6 +12,28 @@ Ver también: [INSTALACION.md](INSTALACION.md) (montar el entorno) · [MANUAL-DE
 
 Ya está instalada la extensión **`johnstoncode.svn-scm`**. Le falta el binario `svn.exe`: no viene incluido en el paquete porque implica elegir y ejecutar un instalador de terceros.
 
+### Si ya tienes TortoiseSVN instalado con "command line client tools"
+
+No hace falta descargar nada: la extensión puede usar el `svn.exe` que trae TortoiseSVN.
+
+1. Comprueba que el `svn.exe` está ahí. Desde una terminal:
+   ```
+   "C:\Program Files\TortoiseSVN\bin\svn.exe" --version --quiet
+   ```
+   Debe mostrar un número de versión (p. ej. `1.14.x`). Si TortoiseSVN está instalado en otra ruta, usa esa ruta aquí y en el paso siguiente.
+2. Añade en `settings.json` (`VSCode-win32-x64-1.141.0\data\user-data\User\settings.json`):
+   ```json
+   "svn.path": "C:\\Program Files\\TortoiseSVN\\bin\\svn.exe"
+   ```
+   La extensión también lo encontraría sola a través del `PATH` (el instalador de TortoiseSVN añade su carpeta `bin`), pero fijar `svn.path` evita que coja otro `svn.exe` distinto que pueda haber en el sistema.
+3. Reinicia VSCode. Las carpetas con checkout SVN deberían aparecer en el panel de control de código fuente.
+
+**Ten en cuenta**:
+- Esta opción **no es portable**: depende de que TortoiseSVN esté instalado en esa máquina. En un PC sin él, usa el cliente portable de abajo.
+- TortoiseSVN y la extensión trabajan sobre las mismas copias de trabajo (`.svn`), así que puedes usar indistintamente el menú contextual de TortoiseSVN en el Explorador de Windows o la extensión de VSCode.
+
+### Si no tienes un `svn.exe` disponible: cliente SVN portable
+
 Si tienes TortoiseSVN instalado pero sin el componente "command line client tools" (el caso más común), para máxima portabilidad **no** actives ese componente a nivel de sistema — mejor trae un `svn.exe` autocontenido:
 
 1. Descarga un cliente SVN para Windows x64 (tú eliges la fuente/versión, por ejemplo SlikSVN u otra que prefieras).
@@ -25,7 +47,7 @@ Si tienes TortoiseSVN instalado pero sin el componente "command line client tool
    ```
 4. Comprueba que funciona: `"Complementos\svn\bin\svn.exe" --version` desde una terminal.
 
-**Alternativa** (menos portable, más rápida): completar la instalación de TortoiseSVN marcando "command line client tools", y apuntar `svn.path` a `C:\Program Files\TortoiseSVN\bin\svn.exe`.
+**Alternativa** (menos portable, más rápida): completar la instalación de TortoiseSVN marcando "command line client tools" y seguir el apartado anterior.
 
 ## 2. Traer las 2 librerías desde SVN
 
@@ -92,7 +114,7 @@ Cambia `port="8080"` y `connectionTimeout="20000"` (milisegundos) por los valore
 
 ## Checklist
 
-- [ ] `svn.exe` copiado en `Complementos\svn\bin\svn.exe` y `svn.path` en `settings.json`
+- [ ] `svn.path` en `settings.json` apuntando al `svn.exe` de TortoiseSVN o al copiado en `Complementos\svn\bin\svn.exe`
 - [ ] 2 librerías descargadas en `Complementos\svn-libs\...`
 - [ ] `java.debug.settings.sourcePaths` apuntando a los fuentes reales
 - [ ] `formatter/formatter.xml` sustituido por el XML real del proyecto (y `java.format.settings.profile` ajustado si el nombre del perfil no es `ProyectoDefault`)

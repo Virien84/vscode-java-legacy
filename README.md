@@ -35,18 +35,18 @@ Si ya lo tenías instalado y quieres rehacerlo desde cero: `.\setup.ps1 -Force`.
 │   ├── lombok-1.18.48.jar
 │   └── ojdbc7-12.1.0.2.jar        # driver JDBC de Oracle
 ├── ESTADO-SETUP.md                # historial y decisiones de la configuración
-└── INSTRUCCIONES-PENDIENTES.md    # manual de uso + pasos pendientes de cada usuario
+├── INSTALACION.md                 # instalación con setup.ps1 + reubicar rutas a mano
+├── MANUAL-DE-USO.md               # día a día: Tomcat, debug, tests, formateo
+└── INSTRUCCIONES-PENDIENTES.md    # pasos pendientes de cada usuario (con sus propios datos)
 ```
 
 Tras ejecutar `setup.ps1` aparecen además `VSCode-win32-x64-.../` y el resto de `Complementos/` (los JDK, Tomcat, Maven) — están en `.gitignore`, no se versionan.
 
 ## Uso
 
-Para todo el día a día — **[INSTRUCCIONES-PENDIENTES.md](INSTRUCCIONES-PENDIENTES.md)**:
-
-- Arrancar y parar Tomcat, modo debug (adjuntar VSCode por JDWP), ejecutar los tests.
-- Qué tocar si mueves la carpeta a otra máquina o usuario.
-- Los pasos que cada usuario debe completar con sus propios datos (no vienen preconfigurados a propósito): cliente SVN portable + las librerías de tus repos SVN, conexión a tu Oracle, puerto/timeout del servidor, alta del servidor Tomcat en la UI de la extensión.
+- **[MANUAL-DE-USO.md](MANUAL-DE-USO.md)** — el día a día: arrancar y parar Tomcat, modo debug (adjuntar VSCode por JDWP), ejecutar los tests, formateo al guardar.
+- **[INSTALACION.md](INSTALACION.md)** — detalles de `setup.ps1` y qué tocar si mueves la carpeta a otra máquina o usuario.
+- **[INSTRUCCIONES-PENDIENTES.md](INSTRUCCIONES-PENDIENTES.md)** — los pasos que cada usuario debe completar con sus propios datos (no vienen preconfigurados a propósito): cliente SVN portable + las librerías de tus repos SVN, conexión a tu Oracle, puerto/timeout del servidor, alta del servidor Tomcat en la UI de la extensión.
 
 Para el porqué de cada decisión de la configuración (por ejemplo, por qué hay dos JDK distintos) — **[ESTADO-SETUP.md](ESTADO-SETUP.md)**.
 

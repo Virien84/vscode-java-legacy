@@ -228,6 +228,16 @@ Se actualizaron todos los componentes a su última versión **dentro de la misma
 
 Proceso: versiones y checksums nuevos en `setup.ps1` (sacados de la API de Adoptium y de los `.sha512` de `archive.apache.org`), ejecutado `.\setup.ps1` → todos los checksums OK. Verificado: `java -version` en ambos JDK, `mvn -version` con JDK 11, `ServerInfo` de Tomcat con JDK 11, `code --version` y lista de extensiones. Antes de borrar las carpetas antiguas se comprobó que no tenían nada personalizado (conf de Tomcat original, `settings.json` = el generado por el script). `settings.json` y `setenv.bat` regenerados con las rutas nuevas.
 
+## División de INSTRUCCIONES-PENDIENTES.md (2026-10-13)
+
+El antiguo `INSTRUCCIONES-PENDIENTES.md` (manual de uso + instalación + pasos pendientes, todo junto) se ha dividido en tres documentos:
+
+- **[INSTALACION.md](INSTALACION.md)** — antigua sección 0 (instalación con `setup.ps1`) + antigua sección 2 (cambiar rutas a mano), que es el complemento de la instalación para reubicar el paquete.
+- **[MANUAL-DE-USO.md](MANUAL-DE-USO.md)** — antigua sección 1 (arrancar/parar Tomcat, debug, tests, formateo); subsecciones renumeradas 1.1–1.5 → 1–5.
+- **[INSTRUCCIONES-PENDIENTES.md](INSTRUCCIONES-PENDIENTES.md)** — antigua sección 3 (pasos que necesitan datos del usuario + checklist); conserva el nombre para no romper enlaces. Subsecciones renumeradas 3.1–3.7 → 1–7.
+
+Las referencias a "sección 3.x" o "INSTRUCCIONES-PENDIENTES.md sección N" en el historial de arriba siguen la numeración antigua. Se han corregido de paso tres enlaces internos que ya estaban rotos en el original (`#5-…`, `#41-…`, `#2-…`) y se han actualizado `README.md` y `setup.ps1`.
+
 ## Decisiones tomadas (y por qué)
 
 - **Se mantienen los DOS JDK (11 y 17), no sobra el 17**: la extensión de Java de VSCode (Red Hat, `redhat.java` / Extension Pack for Java) requiere **JDK 17+ para ejecutar el propio Language Server**, independientemente de la versión con la que se compile el proyecto. Plan: JDK 17 → runtime del Language Server (`java.jdt.ls.java.home`); JDK 11 → JDK del proyecto (compilación/ejecución, `JAVA_HOME`, `maven-compiler-plugin` source/target=11).

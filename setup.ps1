@@ -36,7 +36,7 @@ $complementos = Join-Path $root "Complementos"
 $tmp = Join-Path $root "_setup_tmp"
 
 # ---------------------------------------------------------------------------
-# VERSIONES (fijadas para reproducibilidad; ver INSTRUCCIONES-PENDIENTES.md)
+# VERSIONES (fijadas para reproducibilidad; ver INSTALACION.md)
 # ---------------------------------------------------------------------------
 $vscodeVersion = "1.141.0"
 $vscodeFolder  = "VSCode-win32-x64-$vscodeVersion"
@@ -243,5 +243,5 @@ Write-Host "JDK 17:  $jdk17Abs"
 Write-Host "Tomcat:  $tomcatPath"
 Write-Host "Maven:   $mavenPath"
 Write-Host ""
-Write-Host "Siguiente paso: abre INSTRUCCIONES-PENDIENTES.md, seccion 3, para los pasos"
+Write-Host "Siguiente paso: abre INSTRUCCIONES-PENDIENTES.md para los pasos"
 Write-Host "que quedan (SVN, Oracle, puerto/timeout de Tomcat, anadir el servidor en la UI)."
